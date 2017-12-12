@@ -3,3 +3,7 @@
 
 ## How it all holds together
 ![design diagram](./docs/adv-notifications-architecture.png)
+
+## Start the dev server
+
+```docker-compose up```
