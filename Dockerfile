@@ -8,8 +8,6 @@ RUN apk add --no-cache --virtual .yarn-deps curl gnupg && \
 COPY package.json ./
 RUN yarn
 
-COPY node_modules server.js ./
-
 EXPOSE 3000
 
 CMD [ "yarn", "start" ]

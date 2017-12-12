@@ -10,5 +10,9 @@ services:
       - redis
     environment:
       - REDIS_ADDRESS=redis://redis:6379
+    volumes:
+      - .:/usr/app
   redis:
     image: redis
+    ports:
+      - "6379:6379"

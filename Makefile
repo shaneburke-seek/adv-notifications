@@ -5,11 +5,11 @@ BUILD_VERSION 	   := $(shell cat $(BUNDLE).zip | md5sum | grep -Eo "^.{32}")
 EB_APPLICATION_NAME = adv-notifications-hack-AdCentreNotifications-189ZIFLLM5F6H
 EB_ENVIRONMENT_NAME = adv-AdCe-YA5X0G874HOJ
 
-start:
+start: build
 	@docker-compose up
 
-build: build-container
-	@$(MAKE_IN_CONTAINER) .build
+build:
+	@docker build -t adv-notifications .
 
 package: build-container
 	@$(MAKE_IN_CONTAINER) .package
@@ -22,9 +22,6 @@ update-stack: build-container
 
 build-container:
 	@docker build -t adv-notifications-container -f Dockerfile.build .
-
-.build:
-	@docker build -t adv-notifications
 
 .install:
 	yarn

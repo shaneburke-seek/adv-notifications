@@ -32,65 +32,25 @@ function addSubscriber(subscriberKey) {
 addSubscriber('notifications');
 
 io.on('connection', function(socket) {
-    console.log('New connection', socket.id);
+    console.log('New connection yo!', socket.id);
+    const advertiserId = socket.handshake.query.advertiserId;
+
+    socket.on('disconnect', function() {
+        console.log(`socket disconnected for advertiser ${advertiserId}`)
+    });
+
     // get the highest ranking notifications (most recent) up to notificationHistoryMax size
-    var getNotifications = redis
-        .zrange('notifications', -1 * notificationHistoryMax, -1)
-        .then(function(result) {
-            console.log('result', result);
-            if (!result || result.length === 0) {
-                return [
-                    {
-                        id: 1,
-                        title: 'Biztalk-SAP has 1 new candidate(s)',
-                        timestamp: moment.now(),
-                        read: false
-                    },
-                    {
-                        id: 2,
-                        title: 'Senior devops-SS will expire in 2 day(s)',
-                        timestamp: moment.now(),
-                        read: false
-                    },
-                    {
-                        id: 3,
-                        title: 'Joe Bloggs replied to your message',
-                        timestamp: moment.now(),
-                        read: true
-                    },
-                    {
-                        id: 4,
-                        title: 'Senior QA Specialist has 1 new candidate(s)',
-                        timestamp: moment.now(),
-                        read: false
-                    },
-                    {
-                        id: 5,
-                        title: 'Biztalk-SAP has 1 new candidate(s)',
-                        timestamp: moment.now(),
-                        read: true
-                    }
-                ];
-            }
+    redis.subscribe('broadcast', advertiserId, function (err, count) {
+        if (err) {
+            console.log(`advertiser ${advertiserId} failed to subscribe to redis channels ${err}`);
+        }
+      });
 
-            return result.map(function(x) {
-                return JSON.parse(x);
-            });
-        });
-
-    Promise.all([getNotifications])
-        .then(function(values) {
-            var notifications = values[0];
-            io.emit('init', 'Notifications connected!');
-            io.emit('notifications', notifications);
-
-            socket.on('disconnect', function() {
-                // On disconnect
-            });
-        })
-        .catch(function(reason) {
-            console.log('ERROR: ' + reason);
-        });
+    redis.on('message', function (channel, message) {
+        const parsed = JSON.parse(message)
+        console.log('Receive message %s from channel %s', parsed, channel);
+        io.emit('notifications', parsed);
+      });
 });
 
 http.listen(port, function() {
