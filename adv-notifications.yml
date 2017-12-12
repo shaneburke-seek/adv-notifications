@@ -32,6 +32,10 @@ Outputs:
   ApplicationUrl:
     Description: The URL to the load balancer for the application
     Value: !GetAtt AdCentreNotificationsEnvironment.EndpointURL
+  ApplicationName:
+    Value: !Ref AdCentreNotifications
+  ApplicationEnvironment:
+    Value: !Ref AdCentreNotificationsEnvironment
 Resources:
   RedisCluster:
     Type: AWS::ElastiCache::CacheCluster
@@ -93,6 +97,9 @@ Resources:
       - Namespace: aws:elasticbeanstalk:healthreporting:system
         OptionName: SystemType
         Value: enhanced
+      - Namespace:  aws:elasticbeanstalk:application
+        OptionName:  Application Healthcheck URL
+        Value:  /health
       - Namespace: aws:autoscaling:launchconfiguration
         OptionName: IamInstanceProfile
         Value: aws-elasticbeanstalk-ec2-role

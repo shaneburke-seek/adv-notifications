@@ -1,11 +1,7 @@
 version: '2'
 services:
   socket:
-    image: mhart/alpine-node:8
-    working_dir: /usr/app/
-    command: [sh, -c, "npm install -g yarn && yarn && yarn start"]
-    volumes:
-      - .:/usr/app/
+    build: .
     ports:
       - "3000:3000"
     depends_on:

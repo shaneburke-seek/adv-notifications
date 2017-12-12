@@ -7,3 +7,7 @@
 ## Start the dev server
 
 ```docker-compose up```
+
+# Deploy
+
+```make deploy```
