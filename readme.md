@@ -6,8 +6,8 @@
 
 ## Start the dev server
 
-```docker-compose up```
+```make```
 
-# Deploy
+## Deploy
 
 ```make deploy```

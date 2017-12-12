@@ -5,7 +5,8 @@ BUILD_VERSION 	   := $(shell cat $(BUNDLE).zip | md5sum | grep -Eo "^.{32}")
 EB_APPLICATION_NAME = adv-notifications-hack-AdCentreNotifications-189ZIFLLM5F6H
 EB_ENVIRONMENT_NAME = adv-AdCe-YA5X0G874HOJ
 
-all: start
+start:
+	@docker-compose up
 
 build: build-container
 	@$(MAKE_IN_CONTAINER) .build
