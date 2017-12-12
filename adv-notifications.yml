@@ -63,7 +63,7 @@ Resources:
       ApplicationName: !Ref AdCentreNotifications
       Description: AdCentre Notifications
       SourceBundle:
-        S3Bucket: adv-notifications
+        S3Bucket: adv-notifications-dev
         S3Key: adv-notifications.zip
   AdCentreNotificationsTemplate:
     Type: AWS::ElasticBeanstalk::ConfigurationTemplate
