@@ -8,7 +8,7 @@ EB_ENVIRONMENT_NAME = adv-AdCe-YA5X0G874HOJ
 start: build
 	@docker-compose up
 
-build:
+build: .install
 	@docker build -t adv-notifications .
 
 package: build-container
